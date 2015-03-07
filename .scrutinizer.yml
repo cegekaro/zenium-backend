@@ -1,7 +1,7 @@
 application:
     type: none
 filter:
-    excluded_paths: [tests/*]
+    excluded_paths: [tests/*, app/*]
 checks:
     php:
         code_rating: true
