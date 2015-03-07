@@ -3,13 +3,13 @@ default:
     api:
       type: symfony_bundle
       bundle: ApiBundle
-    default:
       contexts:
-        - FeatureContext:
-           session: '@session'
+        - ApiBundle\Features\Context\FeatureContext:
+           host: 'http://zenium-backend.dev/'
   extensions:
     Behat\Symfony2Extension: ~
     Behat\MinkExtension:
+      default_session: 'symfony2'
       sessions:
-        default:
+        symfony2:
           symfony2: ~
