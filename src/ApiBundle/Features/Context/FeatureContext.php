@@ -45,7 +45,9 @@ class FeatureContext extends BaseApiFeature implements Context, SnippetAccepting
      */
     public function iAmMakingARequestTo($requestMethod, $requestUrl)
     {
+        $requestUrl = 'app_dev.php/' . $requestUrl;
         $requestData     = $this->getRequestData();
+
         $responseWrapper = $this->getGuzzleClient()->createRequest($requestMethod, $requestUrl, null, $requestData)->send();
         $this->setResponseData($responseWrapper);
     }
