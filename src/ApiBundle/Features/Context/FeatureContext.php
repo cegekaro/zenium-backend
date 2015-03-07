@@ -65,7 +65,7 @@ class FeatureContext extends BaseApiFeature implements Context, SnippetAccepting
      */
     public function theResponseContainsValidJson()
     {
-        $responseBody = $this->getResponseData()->getBody();
+        $responseBody = $this->getResponseData()->getBody(true);
 
         \PHPUnit_Framework_TestCase::assertJson($responseBody, 'Expected the response to be valid JSON.');
     }
@@ -75,7 +75,7 @@ class FeatureContext extends BaseApiFeature implements Context, SnippetAccepting
      */
     public function theResponseHasTheSameContentsAsTheFile($file)
     {
-        $actualContent   = $this->getResponseData()->getBody();
+        $actualContent   = $this->getResponseData()->getBody(true);
         $expectedContent = $this->readFile($file);
 
         \PHPUnit_Framework_TestCase::assertJsonStringEqualsJsonString($expectedContent, $actualContent, "Expected the response to match the one in file {$file}.");
