@@ -12,3 +12,6 @@ script:
 - bin/behat
 after_script:
 - php vendor/bin/ocular code-coverage:upload --format=php-clover coverage.clover
+addons:
+  hosts:
+    - zenium-backend.dev
