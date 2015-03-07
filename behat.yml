@@ -1,5 +1,8 @@
 default:
   suites:
+    api:
+      type: symfony_bundle
+      bundle: ApiBundle
     default:
       contexts:
         - FeatureContext:
