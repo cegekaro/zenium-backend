@@ -9,5 +9,6 @@ before_script:
 - travis_retry composer install --no-interaction --prefer-source --dev
 script:
 - phpunit -c app --coverage-text --coverage-clover=coverage.clover
+- bin/behat
 after_script:
 - php vendor/bin/ocular code-coverage:upload --format=php-clover coverage.clover
