@@ -9,3 +9,12 @@ Feature: Question Category CRUD
     Then the response has a status code of "200"
     And the response contains valid JSON
     And the response has the value "name" set to "Agile"
+
+  Scenario: Create Question Category Exception
+    Given I want to make an API request with the data in file "/api-mock/question_category.create.request_invalid.json"
+    When I make a "POST" request to "/api/question-category/"
+    Then the response has a status code of "400"
+    And the response contains valid JSON
+    And the response has the value "code" set to "400"
+    And the response has the value "message" set to "Entity does not validate correctly."
+    And the response has extra information with the value "name" set to "This value should not be blank."

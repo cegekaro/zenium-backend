@@ -4,6 +4,8 @@
 namespace ApiBundle\Controller;
 
 use ApiBundle\Service\AbstractEntityService;
+use AppBundle\Exception\ZeniumException;
+use AppBundle\Exception\ZeniumStatusCode;
 use AppBundle\Manager\AbstractManager;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -37,7 +39,8 @@ abstract class AbstractApiController extends Controller
         $validationErrors = $this->get('validator')->validate($entity);
 
         if (count($validationErrors) > 0) {
-            throw new ZeniumException('Entity does not validate correctly.');
+            $validationErrors = $this->get('api.exception_processing.service')->processValidationErrorsIntoJsonArray($validationErrors);
+            throw new ZeniumException('Entity does not validate correctly.', ZeniumStatusCode::INVALID_DATA, $validationErrors);
         }
 
         $this->getManager()->persist($entity);

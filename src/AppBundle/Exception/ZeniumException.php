@@ -11,8 +11,37 @@ namespace AppBundle\Exception;
  */
 class ZeniumException extends \Exception
 {
-    public function __construct($message)
+    /**
+     * @var array
+     */
+    protected $extraInformation;
+
+    public function __construct($message, $code = 400, $extraInformation = [])
     {
-        parent::__construct($message);
+        parent::__construct($message, $code);
+
+        $this->extraInformation = $extraInformation;
     }
+
+    /**
+     * @return array
+     */
+    public function getExtraInformation()
+    {
+        return $this->extraInformation;
+    }
+
+    /**
+     * @param array $extraInformation
+     *
+     * @return $this
+     */
+    public function setExtraInformation($extraInformation)
+    {
+        $this->extraInformation = $extraInformation;
+
+        return $this;
+    }
+
+
 }

@@ -9,6 +9,7 @@ use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use Behat\MinkExtension\Context\MinkContext;
 use Behat\Symfony2Extension\Context\KernelAwareContext;
+use Guzzle\Http\Exception\ClientErrorResponseException;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
@@ -45,9 +46,15 @@ class FeatureContext extends BaseApiFeature implements Context, SnippetAccepting
      */
     public function iAmMakingARequestTo($requestMethod, $requestUrl)
     {
-        $requestData     = $this->getRequestData();
+        $requestData = $this->getRequestData();
 
-        $responseWrapper = $this->getGuzzleClient()->createRequest($requestMethod, $requestUrl, null, $requestData)->send();
+        $responseWrapper = null;
+        try {
+            $responseWrapper = $this->getGuzzleClient()->createRequest($requestMethod, $requestUrl, null, $requestData)->send();
+        } catch (ClientErrorResponseException $exception) {
+            $responseWrapper = $exception->getResponse();
+        }
+
         $this->setResponseData($responseWrapper);
     }
 
@@ -76,10 +83,27 @@ class FeatureContext extends BaseApiFeature implements Context, SnippetAccepting
      */
     public function theResponseHasTheValueSetTo($key, $value)
     {
-        $responseBody = $this->getResponseData()->getBody(true);
+        $responseBody  = $this->getResponseData()->getBody(true);
         $responseArray = json_decode($responseBody, true);
 
+        $this->checkIfKeyHasValue($responseArray, $key, $value);
+    }
+
+    /**
+     * @Then the response has extra information with the value :arg1 set to :arg2
+     */
+    public function theResponseHasExtraInformationWithTheValueSetTo($key, $value)
+    {
+        $responseBody  = $this->getResponseData()->getBody(true);
+        $responseArray = json_decode($responseBody, true);
+
+        $this->checkIfKeyHasValue($responseArray['extra'], $key, $value);
+    }
+
+    public function checkIfKeyHasValue($responseArray, $key, $value)
+    {
         \PHPUnit_Framework_TestCase::assertArrayHasKey($key, $responseArray, "The {$key} key does not exist in the returned JSON.");
         \PHPUnit_Framework_TestCase::assertEquals($value, $responseArray[$key], "The value {$value} does not match the value returned, {$responseArray[$key]}.");
     }
+
 }
