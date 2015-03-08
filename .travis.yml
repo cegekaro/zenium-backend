@@ -25,6 +25,8 @@ before_script:
 - sudo a2ensite zenium.conf
 # restart everything
 - sudo service apache2 restart
+- shell/reset-db.sh dev
+- shell/reset-db.sh test
 script:
 - phpunit -c app --coverage-text --coverage-clover=coverage.clover
 - bin/behat
