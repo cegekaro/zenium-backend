@@ -72,15 +72,14 @@ class FeatureContext extends BaseApiFeature implements Context, SnippetAccepting
     }
 
     /**
-     * @Then the response has the same contents as the file :arg1
+     * @Then the response has the value :arg1 set to :arg2
      */
-    public function theResponseHasTheSameContentsAsTheFile($file)
+    public function theResponseHasTheValueSetTo($key, $value)
     {
-        $actualContent   = $this->getResponseData()->getBody(true);
-        $expectedContent = $this->readFile($file);
+        $responseBody = $this->getResponseData()->getBody(true);
+        $responseArray = json_decode($responseBody, true);
 
-        \PHPUnit_Framework_TestCase::assertJsonStringEqualsJsonString($expectedContent, $actualContent, "Expected the response to match the one in file {$file}.");
+        \PHPUnit_Framework_TestCase::assertArrayHasKey($key, $responseArray, "The {$key} key does not exist in the returned JSON.");
+        \PHPUnit_Framework_TestCase::assertEquals($value, $responseArray[$key], "The value {$value} does not match the value returned, {$responseArray[$key]}.");
     }
-
-
 }

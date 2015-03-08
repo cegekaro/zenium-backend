@@ -1,4 +1,10 @@
 services:
-#    api.example:
-#        class: ApiBundle\Example
-#        arguments: [@service_id, "plain_value", %parameter%]
+    app.abstract.manager:
+        class: AppBundle\Manager\AbstractManager
+        arguments: [@doctrine.orm.entity_manager]
+        abstract: true
+
+    app.question_category.manager:
+        class: AppBundle\Manager\QuestionCategoryManager
+        arguments: [@doctrine.orm.entity_manager]
+        parent: app.abstract.manager

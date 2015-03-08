@@ -8,4 +8,4 @@ Feature: Question Category CRUD
     When I make a "POST" request to "/api/question-category/"
     Then the response has a status code of "200"
     And the response contains valid JSON
-    And the response has the same contents as the file "/api-mock/question_category.create.response.json"
+    And the response has the value "name" set to "Agile"

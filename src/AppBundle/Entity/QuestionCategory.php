@@ -5,6 +5,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Definition of the Question Category entity.
@@ -24,6 +25,10 @@ class QuestionCategory extends AbstractBaseEntity
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=160)
+     *
+     * @Assert\NotNull()
+     * @Assert\NotBlank()
+     * @Assert\Length(min="2", max="160")
      *
      * @JMS\Type("string")
      * @JMS\Expose()
