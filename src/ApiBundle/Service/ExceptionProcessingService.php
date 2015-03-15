@@ -7,6 +7,13 @@ namespace ApiBundle\Service;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
 
+/**
+ * Handles the processing of various exception messages so that they can be easily
+ * returned by the API.
+ *
+ * @package ApiBundle\Service
+ * @author  Petre Pătrașc <petre@dreamlabs.ro>
+ */
 class ExceptionProcessingService
 {
     /**

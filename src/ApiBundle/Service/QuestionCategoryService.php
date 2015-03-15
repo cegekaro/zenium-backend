@@ -7,6 +7,12 @@ namespace ApiBundle\Service;
 use AppBundle\Entity\AbstractBaseEntity;
 use AppBundle\Entity\QuestionCategory;
 
+/**
+ * Manages creating and updating data for Question Categories.
+ *
+ * @package ApiBundle\Service
+ * @author  Petre Pătrașc <petre@dreamlabs.ro>
+ */
 class QuestionCategoryService extends AbstractEntityService
 {
     /**
@@ -39,6 +45,4 @@ class QuestionCategoryService extends AbstractEntityService
 
         return $object;
     }
-
-
 }

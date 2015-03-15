@@ -6,7 +6,7 @@ namespace ApiBundle\Service;
 use AppBundle\Entity\AbstractBaseEntity;
 
 /**
- * Governs the services in the API Bundle.
+ * Governs the entity services in the API Bundle.
  *
  * @package ApiBundle\Service
  * @author  Petre Pătrașc <petre@dreamlabs.ro>
