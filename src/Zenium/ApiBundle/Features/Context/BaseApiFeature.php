@@ -52,7 +52,7 @@ class BaseApiFeature implements KernelAwareContext
      */
     public function readFile($fileName)
     {
-        $filepath    = __DIR__ . $fileName;
+        $filepath    = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'Resources' . DIRECTORY_SEPARATOR . $fileName;
         $fileContent = @file_get_contents($filepath);
 
         if (false === $fileContent) {
