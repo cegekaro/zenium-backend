@@ -49,6 +49,14 @@ abstract class AbstractBaseEntity
      */
     protected $updatedAt;
 
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", name="deleted")
+     * @JMS\Expose()
+     */
+    protected $deleted = false;
+
     /** @ORM\PrePersist */
     public function prePersistHook()
     {
@@ -108,5 +116,25 @@ abstract class AbstractBaseEntity
     public function getUpdatedAt()
     {
         return $this->updatedAt;
+    }
+
+    /**
+     * @param boolean $deleted
+     *
+     * @return $this
+     */
+    public function setDeleted($deleted)
+    {
+        $this->deleted = $deleted;
+
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isDeleted()
+    {
+        return $this->deleted;
     }
 }

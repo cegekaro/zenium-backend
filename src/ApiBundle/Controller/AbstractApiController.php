@@ -104,7 +104,9 @@ abstract class AbstractApiController extends Controller
             throw new ZeniumException('Resource not found.', ZeniumStatusCode::RESOURCE_NOT_FOUND);
         }
 
-        $this->getManager()->remove($entity);
+        $entity->setDeleted(true);
+
+        $this->getManager()->persist($entity);
         $this->getManager()->flush();
 
         return new Response();

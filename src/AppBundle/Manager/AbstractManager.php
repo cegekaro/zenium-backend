@@ -42,12 +42,22 @@ abstract class AbstractManager
      */
     public function findOneById($id)
     {
-        return $this->getRepository()->find($id);
+        return $this->getRepository()->findOneBy([
+            'id' => $id,
+            'deleted' => false,
+        ]);
     }
 
+    /**
+     * Retrieve all of the valid entries in the system.
+     *
+     * @return array
+     */
     public function findAll()
     {
-        return $this->getRepository()->findAll();
+        return $this->getRepository()->findBy([
+            'deleted' => false,
+        ]);
     }
 
     /**

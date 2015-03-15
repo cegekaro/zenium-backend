@@ -29,6 +29,13 @@ Feature: Question Category CRUD
     And the response has the value "name" set to "CSS"
     And the response has the value "id" set to "5"
 
+  Scenario: Retrieve Question Category when resource no longer exists
+    When I make a "GET" request to "/api/question-category/2"
+    Then the response has a status code of "404"
+    And the response contains valid JSON
+    And the response has the value "code" set to "404"
+    And the response has the value "message" set to "Resource not found."
+
   Scenario: Retrieve Question Category List
     When I make a "GET" request to "/api/question-category/"
     Then the response has a status code of "200"
