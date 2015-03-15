@@ -33,7 +33,9 @@ class QuestionCategoryService extends AbstractEntityService
      */
     public function updateFromArray(AbstractBaseEntity $object, array $properties = [])
     {
-        $object->setName($properties['name']);
+        if (array_key_exists('name', $properties)) {
+            $object->setName($properties['name']);
+        }
 
         return $object;
     }

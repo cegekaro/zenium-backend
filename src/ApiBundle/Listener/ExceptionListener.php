@@ -26,8 +26,12 @@ class ExceptionListener implements EventSubscriberInterface
             $dataArray = [
                 'message' => $exception->getMessage(),
                 'code'    => $exception->getCode(),
-                'extra'   => $exception->getExtraInformation()
             ];
+
+            $extraInformation = $exception->getExtraInformation();
+            if (!empty($extraInformation)) {
+                $dataArray['extra'] = $extraInformation;
+            }
 
             $exceptionWrapper->setResponse(new JsonResponse($dataArray, $exception->getCode()));
         }
