@@ -109,7 +109,7 @@ class QuestionCategoryController extends AbstractApiController
      */
     public function listAction()
     {
-        // TODO: Implement listAction() method.
+        return parent::listAction();
     }
 
 }

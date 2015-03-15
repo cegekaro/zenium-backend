@@ -28,3 +28,9 @@ Feature: Question Category CRUD
     And the response contains valid JSON
     And the response has the value "name" set to "CSS"
     And the response has the value "id" set to "5"
+
+  Scenario: Retrieve Question Category List
+    When I make a "GET" request to "/api/question-category/"
+    Then the response has a status code of "200"
+    And the response contains valid JSON
+    And the response contains an array with "5" items.

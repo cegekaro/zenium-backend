@@ -100,6 +100,19 @@ class FeatureContext extends BaseApiFeature implements Context, SnippetAccepting
         $this->checkIfKeyHasValue($responseArray['extra'], $key, $value);
     }
 
+    /**
+     * @Then the response contains an array with :arg1 items.
+     */
+    public function theResponseContainsAnArrayWithItems($itemCount)
+    {
+        $itemCount = intval($itemCount);
+
+        $responseBody  = $this->getResponseData()->getBody(true);
+        $responseArray = json_decode($responseBody, true);
+
+        \PHPUnit_Framework_TestCase::assertCount($itemCount, $responseArray);
+    }
+
     public function checkIfKeyHasValue($responseArray, $key, $value)
     {
         \PHPUnit_Framework_TestCase::assertArrayHasKey($key, $responseArray, "The {$key} key does not exist in the returned JSON.");

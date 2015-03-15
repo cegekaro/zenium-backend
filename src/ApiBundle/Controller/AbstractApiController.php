@@ -128,6 +128,7 @@ abstract class AbstractApiController extends Controller
         }
 
         $serializedEntity = $this->get('serializer')->serialize($entity, $this->getSerializationFormat());
+
         return new Response($serializedEntity);
     }
 
@@ -138,7 +139,13 @@ abstract class AbstractApiController extends Controller
      *
      * @return string
      */
-    abstract public function listAction();
+    public function listAction()
+    {
+        $entities = $this->getEntityManager()->findAll();
+
+        $serializedEntity = $this->get('serializer')->serialize($entities, $this->getSerializationFormat());
+        return new Response($serializedEntity);
+    }
 
     /**
      * @return ObjectManager

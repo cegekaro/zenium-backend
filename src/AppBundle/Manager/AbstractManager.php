@@ -45,6 +45,11 @@ abstract class AbstractManager
         return $this->getRepository()->find($id);
     }
 
+    public function findAll()
+    {
+        return $this->getRepository()->findAll();
+    }
+
     /**
      * @return ObjectManager
      */
