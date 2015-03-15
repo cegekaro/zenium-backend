@@ -42,3 +42,10 @@ Feature: Question Category CRUD Exceptions
     And the response contains valid JSON
     And the response has the value "code" set to "404"
     And the response has the value "message" set to "Resource not found."
+
+  Scenario: Retrieve Question Category Exception because of resource not found
+    When I make a "GET" request to "/api/question-category/9999"
+    Then the response has a status code of "404"
+    And the response contains valid JSON
+    And the response has the value "code" set to "404"
+    And the response has the value "message" set to "Resource not found."

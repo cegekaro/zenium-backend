@@ -116,10 +116,20 @@ abstract class AbstractApiController extends Controller
      * @param int $id The ID of the entry.
      *
      * @Method({"GET"})
-     *
      * @return string
+     * @throws ZeniumException
      */
-    abstract public function getAction($id);
+    public function getAction($id)
+    {
+        $entity = $this->getEntityManager()->findOneById($id);
+
+        if (null === $entity) {
+            throw new ZeniumException('Resource not found.', ZeniumStatusCode::RESOURCE_NOT_FOUND);
+        }
+
+        $serializedEntity = $this->get('serializer')->serialize($entity, $this->getSerializationFormat());
+        return new Response($serializedEntity);
+    }
 
     /**
      * List all of the entries in the system

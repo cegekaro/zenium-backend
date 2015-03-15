@@ -21,3 +21,10 @@ Feature: Question Category CRUD
   Scenario: Delete Question Category
     When I make a "DELETE" request to "/api/question-category/2"
     Then the response has a status code of "200"
+
+  Scenario: Retrieve Question Category
+    When I make a "GET" request to "/api/question-category/5"
+    Then the response has a status code of "200"
+    And the response contains valid JSON
+    And the response has the value "name" set to "CSS"
+    And the response has the value "id" set to "5"

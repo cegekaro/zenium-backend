@@ -44,6 +44,7 @@ class QuestionCategoryController extends AbstractApiController
      * @Method({"POST"})
      *
      * @param Request $request
+     *
      * @return string
      * @throws ZeniumException
      */
@@ -88,14 +89,14 @@ class QuestionCategoryController extends AbstractApiController
      *
      * @param int $id The ID of the entry.
      *
-     * @Route("/question-category/", name="api.question_category.get")
+     * @Route("/question-category/{id}", name="api.question_category.get")
      * @Method({"GET"})
      *
      * @return string
      */
     public function getAction($id)
     {
-        // TODO: Implement getAction() method.
+        return parent::getAction($id);
     }
 
     /**
