@@ -4,7 +4,7 @@ default:
       type: symfony_bundle
       bundle: ApiBundle
       contexts:
-        - ApiBundle\Features\Context\FeatureContext:
+        - Zenium\ApiBundle\Features\Context\FeatureContext:
            host: 'http://zenium-backend.dev/'
   extensions:
     Behat\Symfony2Extension: ~

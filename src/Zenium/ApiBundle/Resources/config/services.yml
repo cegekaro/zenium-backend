@@ -1,0 +1,15 @@
+services:
+    api.entity.service.abstract:
+        class: Zenium\ApiBundle\Service\AbstractBaseService
+
+    api.question_category.service:
+        class: Zenium\ApiBundle\Service\QuestionCategoryService
+        parent: api.entity.service.abstract
+
+    api.exception.listener:
+        class: Zenium\ApiBundle\Listener\ExceptionListener
+        tags:
+            - { name: kernel.event_subscriber }
+
+    api.exception_processing.service:
+        class: Zenium\ApiBundle\Service\ExceptionProcessingService
