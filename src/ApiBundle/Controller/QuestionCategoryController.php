@@ -80,7 +80,7 @@ class QuestionCategoryController extends AbstractApiController
      */
     public function deleteAction($id)
     {
-        // TODO: Implement deleteAction() method.
+        return parent::deleteAction($id);
     }
 
     /**

@@ -71,9 +71,9 @@ abstract class AbstractApiController extends Controller
             throw new ZeniumException('Resource not found.', ZeniumStatusCode::RESOURCE_NOT_FOUND);
         }
 
-        $entity = $this->getEntityService()->updateFromArray($entity, $requestData);
+        $entity           = $this->getEntityService()->updateFromArray($entity, $requestData);
         $validationErrors = $this->get('validator')->validate($entity);
-        
+
         if (count($validationErrors) > 0) {
             $validationErrors = $this->get('api.exception_processing.service')->processValidationErrorsIntoJsonArray($validationErrors);
             throw new ZeniumException('Entity does not validate correctly.', ZeniumStatusCode::INVALID_DATA, $validationErrors);
@@ -93,10 +93,22 @@ abstract class AbstractApiController extends Controller
      * @param int $id The ID of the entry.
      *
      * @Method({"DELETE"})
-     *
      * @return string
+     * @throws ZeniumException
      */
-    abstract public function deleteAction($id);
+    public function deleteAction($id)
+    {
+        $entity = $this->getEntityManager()->findOneById($id);
+
+        if (null === $entity) {
+            throw new ZeniumException('Resource not found.', ZeniumStatusCode::RESOURCE_NOT_FOUND);
+        }
+
+        $this->getManager()->remove($entity);
+        $this->getManager()->flush();
+
+        return new Response();
+    }
 
     /**
      * Retrieve one of the entries in the system.
