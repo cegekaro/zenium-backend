@@ -14,14 +14,16 @@ class QuestionCategoryControllerTest extends AbstractApiControllerTest
     /**
      * Retrieve the URL path of the controller.
      * Used in order to generate paths for the request tests.
-     * Example: "question-category" is used in order to generate:
+     * Example: "question-category/" is used in order to generate:
      * http://localhost/api/question-category/
+     *
+     * Remember to add a trailing space!
      *
      * @return string
      */
     public function getUrlPath()
     {
-        return 'question-category';
+        return 'question-category/';
     }
 
 }

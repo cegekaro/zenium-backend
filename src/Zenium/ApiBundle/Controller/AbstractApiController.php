@@ -49,7 +49,7 @@ abstract class AbstractApiController extends Controller
 
         $serializedEntity = $this->get('serializer')->serialize($entity, $this->getSerializationFormat());
 
-        return new Response($serializedEntity);
+        return new ZeniumResponse($serializedEntity);
     }
 
     /**
@@ -85,7 +85,7 @@ abstract class AbstractApiController extends Controller
 
         $serializedEntity = $this->get('serializer')->serialize($entity, $this->getSerializationFormat());
 
-        return new Response($serializedEntity);
+        return new ZeniumResponse($serializedEntity);
     }
 
     /**
@@ -110,7 +110,7 @@ abstract class AbstractApiController extends Controller
         $this->getManager()->persist($entity);
         $this->getManager()->flush();
 
-        return new Response();
+        return new ZeniumResponse();
     }
 
     /**
@@ -132,7 +132,7 @@ abstract class AbstractApiController extends Controller
 
         $serializedEntity = $this->get('serializer')->serialize($entity, $this->getSerializationFormat());
 
-        return new Response($serializedEntity);
+        return new ZeniumResponse($serializedEntity);
     }
 
     /**
@@ -148,7 +148,7 @@ abstract class AbstractApiController extends Controller
 
         $serializedEntity = $this->get('serializer')->serialize($entities, $this->getSerializationFormat());
 
-        return new Response($serializedEntity);
+        return new ZeniumResponse($serializedEntity);
     }
 
     /**

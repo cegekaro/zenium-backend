@@ -34,11 +34,11 @@ abstract class AbstractManagerTest extends AbstractBaseIntegrationTest
 
     public function testFindOneById()
     {
-        $entity = $this->getTestedManager()->findOneById(1);
+        $entity = $this->getTestedManager()->findOneById(2);
 
         $this->assertInstanceOf($this->getClassPath(), $entity, 'Entity did not match classpath.');
         $this->assertNotNull($entity, 'Fixture data has not been defined.');
-        $this->assertEquals(1, $entity->getId(), 'The method did not retrieve the ID that was requested.');
+        $this->assertEquals(2, $entity->getId(), 'The method did not retrieve the ID that was requested.');
         $this->assertFalse($entity->isDeleted(), 'Find method retrieved a deleted entity.');
     }
 
