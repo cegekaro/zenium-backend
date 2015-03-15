@@ -65,7 +65,7 @@ class FeatureContext extends BaseApiFeature implements Context, SnippetAccepting
     {
         $actualStatusCode = $this->getResponseData()->getStatusCode();
 
-        \PHPUnit_Framework_TestCase::assertEquals($expectedStatusCode, $actualStatusCode, "Expected the response to have a status code of {$actualStatusCode}.");
+        \PHPUnit_Framework_TestCase::assertEquals($expectedStatusCode, $actualStatusCode, "Expected the response to have a status code of {$expectedStatusCode}.");
     }
 
     /**

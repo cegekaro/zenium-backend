@@ -65,7 +65,7 @@ class QuestionCategoryController extends AbstractApiController
      */
     public function updateAction(Request $request, $id)
     {
-        // TODO: Implement updateAction() method.
+        return parent::updateAction($request, $id);
     }
 
     /**

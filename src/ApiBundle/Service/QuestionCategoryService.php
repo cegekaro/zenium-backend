@@ -20,9 +20,23 @@ class QuestionCategoryService extends AbstractEntityService
     {
         $questionCategory = new QuestionCategory;
 
-        $questionCategory->setName($properties['name']);
-
-        return $questionCategory;
+        return $this->updateFromArray($questionCategory, $properties);
     }
+
+    /**
+     * Update an entry with data from an array.
+     *
+     * @param AbstractBaseEntity $object
+     * @param array              $properties
+     *
+     * @return AbstractBaseEntity
+     */
+    public function updateFromArray(AbstractBaseEntity $object, array $properties = [])
+    {
+        $object->setName($properties['name']);
+
+        return $object;
+    }
+
 
 }

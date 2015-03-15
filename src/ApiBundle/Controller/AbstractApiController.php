@@ -54,13 +54,38 @@ abstract class AbstractApiController extends Controller
     /**
      * Update one of the entries in the system.
      *
-     * @param int $id The ID of the entry.
+     * @param Request $request
+     * @param int     $id The ID of the entry.
      *
      * @Method({"PUT", "PATCH"})
-     *
      * @return string
+     * @throws ZeniumException
      */
-    abstract public function updateAction(Request $request, $id);
+    public function updateAction(Request $request, $id)
+    {
+        $jsonData    = $request->getContent();
+        $requestData = json_decode($jsonData, true);
+
+        $entity = $this->getEntityManager()->findOneById($id);
+        if (null === $entity) {
+            throw new ZeniumException('Resource not found.', ZeniumStatusCode::RESOURCE_NOT_FOUND);
+        }
+
+        $entity = $this->getEntityService()->updateFromArray($entity, $requestData);
+        $validationErrors = $this->get('validator')->validate($entity);
+        
+        if (count($validationErrors) > 0) {
+            $validationErrors = $this->get('api.exception_processing.service')->processValidationErrorsIntoJsonArray($validationErrors);
+            throw new ZeniumException('Entity does not validate correctly.', ZeniumStatusCode::INVALID_DATA, $validationErrors);
+        }
+
+        $this->getManager()->persist($entity);
+        $this->getManager()->flush();
+
+        $serializedEntity = $this->get('serializer')->serialize($entity, $this->getSerializationFormat());
+
+        return new Response($serializedEntity);
+    }
 
     /**
      * Delete one of the entries in the system.

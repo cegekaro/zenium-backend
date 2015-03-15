@@ -14,9 +14,19 @@ use AppBundle\Entity\AbstractBaseEntity;
 abstract class AbstractEntityService
 {
     /**
+     * Update an entry with data from an array.
+     *
+     * @param AbstractBaseEntity $object
+     * @param array              $properties
+     *
+     * @return AbstractBaseEntity
+     */
+    abstract public function updateFromArray(AbstractBaseEntity $object, array $properties = []);
+
+    /**
      * Create a new entry from an array.
      *
-     * @param array $properties The properties with which the entry is built.
+     * @param array $properties
      *
      * @return AbstractBaseEntity
      */
