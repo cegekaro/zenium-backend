@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Zenium\ApiBundle\Tests\Service;
+namespace Zenium\ApiBundle\Tests\Integration\Service;
 
 
 use Zenium\ApiBundle\Service\ExceptionProcessingService;
