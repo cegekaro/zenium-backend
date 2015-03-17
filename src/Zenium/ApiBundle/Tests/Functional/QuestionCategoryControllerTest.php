@@ -27,20 +27,81 @@ class QuestionCategoryControllerTest extends AbstractApiControllerTest
     }
 
     /**
-     * @return array
+     * Get the data to create a valid request.
+     *
+     * @return string
      */
-    public function restActionDataProvider()
-
+    protected function getCreateMockData()
     {
-        $urlPath = '/api/' . $this->getUrlPath();
-
-        return [
-            ['GET', $urlPath],
-            ['GET', $urlPath . '1'],
-            ['DELETE', $urlPath . '1'],
-            ['POST', $urlPath, $this->readMockFile('question_category.create.request.json')],
-            ['PUT', $urlPath . '2', $this->readMockFile('question_category.update.request.json')],
-        ];
+        return $this->readMockFile('question_category.create.request.json');
     }
+
+    /**
+     * Get the data to make a valid update request.
+     *
+     * @return string
+     */
+    protected function getUpdateMockData()
+    {
+        return $this->readMockFile('question_category.update.request.json');
+    }
+
+    /**
+     * Verify the data that was retrieved after making a create request.
+     *
+     * @param array $responseData The data retrieved, after decoding it from JSON into an array.
+     *
+     * @return mixed
+     */
+    protected function verifyCreateResponse(array $responseData)
+    {
+        $this->assertArrayHasKey('id', $responseData, 'Expected the entity to have an ID field.');
+        $this->assertArrayHasKey('name', $responseData, 'Expected the entity to have a name.');
+
+        $this->assertEquals('Agile', $responseData['name'], 'Expected the name to match the value in the mock file.');
+        $this->assertNotNull($responseData['id'], 'Expected ID to not be null');
+    }
+
+    /**
+     * Verify the data that was retrieved after making an update request.
+     *
+     * @param array $responseData The data retrieved, after decoding it from JSON into an array.
+     *
+     * @return mixed
+     */
+    protected function verifyUpdateResponse(array $responseData)
+    {
+        $this->assertArrayHasKey('id', $responseData, 'Expected the entity to have an ID field.');
+        $this->assertArrayHasKey('name', $responseData, 'Expected the entity to have a name.');
+
+        $this->assertEquals('Update test', $responseData['name'], 'Expected the name to match the value in the mock file.');
+        $this->assertEquals(2, $responseData['id'], 'Wrong ID returned for update operation, it seems that a new entry was persisted.');
+    }
+
+    /**
+     * Verify the data that was retrieved after making a retrieve request.
+     *
+     * @param array $responseData The data retrieved, after decoding it from JSON into an array.
+     *
+     * @return mixed
+     */
+    protected function verifyRetrieveResponse(array $responseData)
+    {
+        $this->verifyUpdateResponse($responseData);
+    }
+
+    /**
+     * Verify the data that was retrieved after making a list request.
+     *
+     * @param array $responseData The data retrieved, after decoding it from JSON into an array.
+     *
+     * @return mixed
+     */
+    protected function verifyListResponse(array $responseData)
+    {
+        $this->assertInternalType('array', $responseData);
+        $this->assertGreaterThan(1, $responseData);
+    }
+
 
 }
