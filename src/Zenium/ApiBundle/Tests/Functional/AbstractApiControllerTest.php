@@ -61,17 +61,6 @@ abstract class AbstractApiControllerTest extends AbstractBaseFunctionalTest
     /**
      * @return array
      */
-    public function restActionDataProvider()
-    {
-        $urlPath = '/api/' . $this->getUrlPath();
-
-        return [
-            ['GET', $urlPath],
-            ['GET', $urlPath . '1'],
-            ['DELETE', $urlPath . '1'],
-            ['POST', $urlPath, $this->readMockFile('question_category.create.request.json')],
-            ['PUT', $urlPath . '2', $this->readMockFile('question_category.update.request.json')],
-        ];
-    }
+    abstract public function restActionDataProvider();
 
 }

@@ -1,3 +1,3 @@
 #!/bin/sh
 
-phpunit -c app
+bin/phpunit -c app
