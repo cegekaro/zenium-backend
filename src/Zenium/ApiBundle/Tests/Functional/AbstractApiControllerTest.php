@@ -8,6 +8,7 @@ use Guzzle\Http\Client;
 use Guzzle\Http\Exception\ClientErrorResponseException;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Zenium\AppBundle\Exception\ZeniumStatusCode;
 use Zenium\AppBundle\Tests\Functional\AbstractBaseFunctionalTest;
 
 /**
@@ -72,6 +73,26 @@ abstract class AbstractApiControllerTest extends AbstractBaseFunctionalTest
      * @return string
      */
     abstract protected function getUpdateMockData();
+
+    /**
+     * Get the data to make an invalid create request.
+     *
+     * @return string
+     */
+    protected function getInvalidCreateMockData()
+    {
+        return null;
+    }
+
+    /**
+     * Get the data to make an invalid update request.
+     *
+     * @return string
+     */
+    protected function getInvalidUpdateMockData()
+    {
+        return null;
+    }
 
     /**
      * Verify the data that was retrieved after making a create request.
@@ -162,5 +183,65 @@ abstract class AbstractApiControllerTest extends AbstractBaseFunctionalTest
         $responseData    = json_decode($responseContent, true);
 
         $this->verifyRetrieveResponse($responseData);
+    }
+
+    /**
+     * @param      $requestMethod
+     * @param      $requestUrl
+     * @param null $requestContent
+     *
+     * @dataProvider resourceNotFoundDataProvider
+     */
+    public function testRequestActionWhenResourceIsNotFound($requestMethod, $requestUrl, $requestContent = null)
+    {
+        $resourceNotFoundCode = ZeniumStatusCode::RESOURCE_NOT_FOUND;
+
+        $this->getClient()->request($requestMethod, $requestUrl, [], [], [], $requestContent);
+        $responseContent = $this->getClient()->getResponse()->getContent();
+        $responseData    = json_decode($responseContent, true);
+
+        $this->assertEquals($resourceNotFoundCode, $this->getClient()->getResponse()->getStatusCode(), "Response should have the status code set to {$resourceNotFoundCode}.");
+        $this->assertEquals($resourceNotFoundCode, $responseData['code'], "Response should contain a code element with the value {$resourceNotFoundCode}.");
+        $this->assertEquals("Resource not found.", $responseData['message'], "Exception message is not the one expected.");
+    }
+
+    public function resourceNotFoundDataProvider()
+    {
+        $urlPath = '/api/' . $this->getUrlPath() . '9999';
+
+        return [
+            ['GET', $urlPath],
+            ['PUT', $urlPath, $this->getUpdateMockData()],
+            ['DELETE', $urlPath],
+        ];
+    }
+
+    /**
+     * @param $requestMethod
+     * @param $requestUrl
+     * @param $requestContent
+     * @dataProvider invalidDataProvider
+     */
+    public function testRequestActionWhenRequestDataIsInvalid($requestMethod, $requestUrl, $requestContent = null)
+    {
+        $invalidDataCode = ZeniumStatusCode::INVALID_DATA;
+
+        $this->getClient()->request($requestMethod, $requestUrl, [], [], [], $requestContent);
+        $responseContent = $this->getClient()->getResponse()->getContent();
+        $responseData    = json_decode($responseContent, true);
+
+        $this->assertEquals($invalidDataCode, $this->getClient()->getResponse()->getStatusCode(), "Response should have the status code set to {$invalidDataCode}.");
+        $this->assertEquals($invalidDataCode, $responseData['code'], "Response should contain a code element with the value {$invalidDataCode}.");
+        $this->assertEquals("Entity does not validate correctly.", $responseData['message'], "Exception message is not the one expected.");
+    }
+
+    public function invalidDataProvider()
+    {
+        $urlPath = '/api/' . $this->getUrlPath();
+
+        return [
+            ['POST', $urlPath, $this->getInvalidCreateMockData()],
+            ['PUT', $urlPath . '3', $this->getInvalidUpdateMockData()],
+        ];
     }
 }

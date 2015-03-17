@@ -47,6 +47,23 @@ class QuestionCategoryControllerTest extends AbstractApiControllerTest
     }
 
     /**
+     * @inheritdoc
+     */
+    protected function getInvalidCreateMockData()
+    {
+        return $this->readMockFile('question_category.create.request_invalid.json');
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function getInvalidUpdateMockData()
+    {
+        return $this->readMockFile('question_category.update.request_invalid.json');
+    }
+
+
+    /**
      * Verify the data that was retrieved after making a create request.
      *
      * @param array $responseData The data retrieved, after decoding it from JSON into an array.
