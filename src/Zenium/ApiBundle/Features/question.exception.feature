@@ -23,10 +23,10 @@ Feature: Question CRUD Exceptions
   Scenario: Update Question Exception because of invalid data
     Given I want to make an API request with the data in file "/api-mock/question.update.request_invalid.json"
     When I make a "PUT" request to "/api/question/1"
-    Then the response has a status code of "404"
+    Then the response has a status code of "400"
     And the response contains valid JSON
-    And the response has the value "code" set to "404"
-    And the response has the value "message" set to "Resource not found."
+    And the response has the value "code" set to "400"
+    And the response has the value "message" set to "Entity does not validate correctly."
     And the response has extra information with the value "difficulty" set to "This value should not be blank."
 
   Scenario: Delete Question Exception because of resource not found

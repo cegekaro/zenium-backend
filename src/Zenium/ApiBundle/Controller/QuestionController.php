@@ -2,8 +2,12 @@
 
 namespace Zenium\ApiBundle\Controller;
 
+use Symfony\Component\HttpFoundation\Response;
 use Zenium\ApiBundle\Service\AbstractEntityService;
+use Zenium\AppBundle\Entity\Question;
+use Zenium\AppBundle\Entity\QuestionCategory;
 use Zenium\AppBundle\Exception\ZeniumException;
+use Zenium\AppBundle\Exception\ZeniumStatusCode;
 use Zenium\AppBundle\Manager\AbstractManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -108,6 +112,40 @@ class QuestionController extends AbstractApiController
     public function listAction()
     {
         return parent::listAction();
+    }
+
+    /**
+     * Associate a Question to a Question Category
+     *
+     * @Route("/question/{questionId}/question-category/{questionCategoryId}", name="api.question.associate.question_category")
+     * @Method({"PATCH"})
+     *
+     * @param int $questionId
+     * @param int $questionCategoryId
+     *
+     * @return string
+     * @throws ZeniumException
+     */
+    public function associateToQuestionCategoryAction(Request $request, $questionId, $questionCategoryId)
+    {
+        $jsonData    = $request->getContent();
+        $requestData = json_decode($jsonData, true);
+
+        /** @var Question $question */
+        $question = $this->get('zenium.app.question.manager')->findOneById($questionId);
+        if (null === $question) {
+            throw new ZeniumException('Resource not found.', ZeniumStatusCode::RESOURCE_NOT_FOUND);
+        }
+
+        /** @var QuestionCategory $questionCategory */
+        $questionCategory = $this->get('zenium.app.question_category.manager')->findOneById($questionCategoryId);
+        if (null === $questionCategory) {
+            throw new ZeniumException('Resource not found.', ZeniumStatusCode::RESOURCE_NOT_FOUND);
+        }
+
+        $question->setQuestionCategory($questionCategory);
+
+        return new ZeniumResponse();
     }
 
 }

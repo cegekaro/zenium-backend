@@ -18,7 +18,7 @@ Feature: Question CRUD
     And the response contains valid JSON
     And the response has the value "content" set to "Which of the answers below best describes the OOP term 'inheritance'?"
     And the response has the value "id" set to "2"
-    And the response has the value "difficulty" set to "3"
+    And the response has the value "difficulty" set to "2"
 
   Scenario: Delete Question
     When I make a "DELETE" request to "/api/question/2"
@@ -28,7 +28,7 @@ Feature: Question CRUD
     When I make a "GET" request to "/api/question/3"
     Then the response has a status code of "200"
     And the response contains valid JSON
-    And the response has the value "content" set to "What is the role of a PM?"
+    And the response has the value "content" set to "What is the role of a Repository?"
     And the response has the value "difficulty" set to "2"
     And the response has the value "id" set to "3"
 
@@ -43,7 +43,7 @@ Feature: Question CRUD
     When I make a "GET" request to "/api/question/"
     Then the response has a status code of "200"
     And the response contains valid JSON
-    And the response contains an array with "4" items.
+    And the response contains an array with "3" items.
 
   Scenario: Associate Question to Question Category
     When I make a "PATCH" request to "/api/question/1/question-category/1"
