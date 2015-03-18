@@ -40,7 +40,7 @@ abstract class AbstractApiController extends Controller
         $validationErrors = $this->get('validator')->validate($entity);
 
         if (count($validationErrors) > 0) {
-            $validationErrors = $this->get('api.exception_processing.service')->processValidationErrorsIntoJsonArray($validationErrors);
+            $validationErrors = $this->get('zenium.api.exception_processing.service')->processValidationErrorsIntoJsonArray($validationErrors);
             throw new ZeniumException('Entity does not validate correctly.', ZeniumStatusCode::INVALID_DATA, $validationErrors);
         }
 
@@ -76,7 +76,7 @@ abstract class AbstractApiController extends Controller
         $validationErrors = $this->get('validator')->validate($entity);
 
         if (count($validationErrors) > 0) {
-            $validationErrors = $this->get('api.exception_processing.service')->processValidationErrorsIntoJsonArray($validationErrors);
+            $validationErrors = $this->get('zenium.api.exception_processing.service')->processValidationErrorsIntoJsonArray($validationErrors);
             throw new ZeniumException('Entity does not validate correctly.', ZeniumStatusCode::INVALID_DATA, $validationErrors);
         }
 
