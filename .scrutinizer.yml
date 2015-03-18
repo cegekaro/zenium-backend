@@ -1,7 +1,7 @@
 application:
     type: none
 filter:
-    excluded_paths: [tests/*, app/*, src/Zenium/*/Features, src/Zenium/*/DataFixtures]
+    excluded_paths: [tests/*, app/*, src/Zenium/*/Features, src/Zenium/*/DataFixtures, src/Zenium/*/DependencyInjection]
 checks:
     php:
         code_rating: true
