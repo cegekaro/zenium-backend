@@ -126,11 +126,8 @@ class QuestionController extends AbstractApiController
      * @return string
      * @throws ZeniumException
      */
-    public function associateToQuestionCategoryAction(Request $request, $questionId, $questionCategoryId)
+    public function associateToQuestionCategoryAction($questionId, $questionCategoryId)
     {
-        $jsonData    = $request->getContent();
-        $requestData = json_decode($jsonData, true);
-
         /** @var Question $question */
         $question = $this->get('zenium.app.question.manager')->findOneById($questionId);
         if (null === $question) {
