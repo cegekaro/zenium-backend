@@ -29,7 +29,7 @@ Feature: Question CRUD
     Then the response has a status code of "200"
     And the response contains valid JSON
     And the response has the value "content" set to "What is the role of a PM?"
-    And the response has the value "content" set to "2"
+    And the response has the value "difficulty" set to "2"
     And the response has the value "id" set to "3"
 
   Scenario: Retrieve Question when resource no longer exists

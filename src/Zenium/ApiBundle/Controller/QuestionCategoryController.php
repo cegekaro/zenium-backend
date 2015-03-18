@@ -22,7 +22,7 @@ class QuestionCategoryController extends AbstractApiController
      */
     public function getEntityManager()
     {
-        return $this->get('app.question_category.manager');
+        return $this->get('zenium.app.question_category.manager');
     }
 
     /**

@@ -7,19 +7,19 @@ namespace Zenium\AppBundle\Tests\Integration\Manager;
 use Zenium\AppBundle\Manager\AbstractManager;
 
 /**
- * Integration test for the Question Category Manager class.
+ * Integration test for the Question Manager class.
  *
  * @package Zenium\AppBundle\Tests\Integration\Manager
  * @author  Petre Pătrașc <petre@dreamlabs.ro>
  */
-class QuestionCategoryManagerTest extends AbstractManagerTest
+class QuestionManagerTest extends AbstractManagerTest
 {
     /**
      * @return AbstractManager
      */
     public function getTestedManager()
     {
-        return $this->getContainer()->get('zenium.app.question_category.manager');
+        return $this->getContainer()->get('zenium.app.question.manager');
     }
 
     /**
@@ -30,7 +30,7 @@ class QuestionCategoryManagerTest extends AbstractManagerTest
      */
     public function getClassPath()
     {
-        return 'Zenium\AppBundle\Entity\QuestionCategory';
+        return 'Zenium\AppBundle\Entity\Question';
     }
 
 
