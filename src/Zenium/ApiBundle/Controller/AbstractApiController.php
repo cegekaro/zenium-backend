@@ -53,26 +53,11 @@ abstract class AbstractApiController extends Controller
      */
     public function updateAction(Request $request, $id)
     {
-        $jsonData    = $request->getContent();
-        $requestData = json_decode($jsonData, true);
+        $requestData = $this->getRequestContentAsArray($request);
+        $existingEntity = $this->getEntityManager()->findOneById($id);
 
-        $entity = $this->getEntityManager()->findOneById($id);
-        if (null === $entity) {
-            throw new ZeniumException('Resource not found.', ZeniumStatusCode::RESOURCE_NOT_FOUND);
-        }
-
-        $entity           = $this->getEntityService()->updateFromArray($entity, $requestData);
-        $validationErrors = $this->get('validator')->validate($entity);
-
-        if (count($validationErrors) > 0) {
-            $validationErrors = $this->get('zenium.api.exception_processing.service')->processValidationErrorsIntoJsonArray($validationErrors);
-            throw new ZeniumException('Entity does not validate correctly.', ZeniumStatusCode::INVALID_DATA, $validationErrors);
-        }
-
-        $this->getManager()->persist($entity);
-        $this->getManager()->flush();
-
-        $serializedEntity = $this->get('serializer')->serialize($entity, $this->getSerializationFormat());
+        $updatedEntity = $this->getEntityService()->updateFromArrayValidateAndPersist($existingEntity, $requestData);
+        $serializedEntity = $this->get('serializer')->serialize($updatedEntity, $this->getSerializationFormat());
 
         return new ZeniumResponse($serializedEntity);
     }

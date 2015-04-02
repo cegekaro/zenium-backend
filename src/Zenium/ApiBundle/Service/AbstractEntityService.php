@@ -66,6 +66,33 @@ abstract class AbstractEntityService
     }
 
     /**
+     * Update an existing Entity from a properties array and validate it.
+     * Will throw a ZeniumException that should be automatically caught
+     * by the appropriate Listener, so that the API call gets a specific Response.
+     *
+     * @param AbstractBaseEntity $entity     The entity that needs to be updated.
+     * @param array              $properties The array containing the properties with which the entity needs to be updated.
+     *
+     * @return AbstractBaseEntity
+     * @throws ZeniumException
+     */
+    public function updateFromArrayValidateAndPersist($entity, array $properties = [])
+    {
+        $entity           = $this->updateFromArray($entity, $properties);
+        $validationErrors = $this->getValidationService()->validate($entity);
+
+        if (count($validationErrors) > 0) {
+            $validationErrors = $this->getExceptionProcessingService()->processValidationErrorsIntoJsonArray($validationErrors);
+            throw new ZeniumException('Entity does not validate correctly.', ZeniumStatusCode::INVALID_DATA, $validationErrors);
+        }
+
+        $this->getManager()->persist($entity);
+        $this->getManager()->flush();
+
+        return $entity;
+    }
+
+    /**
      * Update an entry with data from an array.
      *
      * @param AbstractBaseEntity $object
