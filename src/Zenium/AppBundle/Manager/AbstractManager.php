@@ -70,6 +70,25 @@ abstract class AbstractManager
     }
 
     /**
+     * Delete an entry by its ID.
+     *
+     * @param int $id The ID of the entry that should be deleted.
+     *
+     * @return null|AbstractBaseEntity
+     * @throws ZeniumException
+     */
+    public function deleteById($id)
+    {
+        $entity = $this->findOneById($id);
+        $entity->setDeleted(true);
+
+        $this->getManager()->persist($entity);
+        $this->getManager()->flush();
+
+        return $entity;
+    }
+
+    /**
      * @return ObjectManager
      */
     public function getManager()

@@ -53,10 +53,10 @@ abstract class AbstractApiController extends Controller
      */
     public function updateAction(Request $request, $id)
     {
-        $requestData = $this->getRequestContentAsArray($request);
+        $requestData    = $this->getRequestContentAsArray($request);
         $existingEntity = $this->getEntityManager()->findOneById($id);
 
-        $updatedEntity = $this->getEntityService()->updateFromArrayValidateAndPersist($existingEntity, $requestData);
+        $updatedEntity    = $this->getEntityService()->updateFromArrayValidateAndPersist($existingEntity, $requestData);
         $serializedEntity = $this->get('serializer')->serialize($updatedEntity, $this->getSerializationFormat());
 
         return new ZeniumResponse($serializedEntity);
@@ -73,16 +73,7 @@ abstract class AbstractApiController extends Controller
      */
     public function deleteAction($id)
     {
-        $entity = $this->getEntityManager()->findOneById($id);
-
-        if (null === $entity) {
-            throw new ZeniumException('Resource not found.', ZeniumStatusCode::RESOURCE_NOT_FOUND);
-        }
-
-        $entity->setDeleted(true);
-
-        $this->getManager()->persist($entity);
-        $this->getManager()->flush();
+        $this->getEntityManager()->deleteById($id);
 
         return new ZeniumResponse();
     }
