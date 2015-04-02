@@ -91,10 +91,6 @@ abstract class AbstractApiController extends Controller
     {
         $entity = $this->getEntityManager()->findOneById($id);
 
-        if (null === $entity) {
-            throw new ZeniumException('Resource not found.', ZeniumStatusCode::RESOURCE_NOT_FOUND);
-        }
-
         $serializedEntity = $this->get('serializer')->serialize($entity, $this->getSerializationFormat());
 
         return new ZeniumResponse($serializedEntity);
