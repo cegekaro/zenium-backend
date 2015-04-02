@@ -1,6 +1,7 @@
 services:
     zenium.api.entity.service.abstract:
         class: Zenium\ApiBundle\Service\AbstractBaseService
+        arguments: [@doctrine.orm.entity_manager, @zenium.api.exception_processing.service, @validator]
 
     zenium.api.question_category.service:
         class: Zenium\ApiBundle\Service\QuestionCategoryService

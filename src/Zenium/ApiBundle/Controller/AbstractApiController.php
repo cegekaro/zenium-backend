@@ -33,20 +33,9 @@ abstract class AbstractApiController extends Controller
      */
     public function createAction(Request $request)
     {
-        $jsonData    = $request->getContent();
-        $requestData = json_decode($jsonData, true);
+        $requestData = $this->getRequestContentAsArray($request);
 
-        $entity           = $this->getEntityService()->createFromArray($requestData);
-        $validationErrors = $this->get('validator')->validate($entity);
-
-        if (count($validationErrors) > 0) {
-            $validationErrors = $this->get('zenium.api.exception_processing.service')->processValidationErrorsIntoJsonArray($validationErrors);
-            throw new ZeniumException('Entity does not validate correctly.', ZeniumStatusCode::INVALID_DATA, $validationErrors);
-        }
-
-        $this->getManager()->persist($entity);
-        $this->getManager()->flush();
-
+        $entity           = $this->getEntityService()->createFromArrayValidateAndPersist($requestData);
         $serializedEntity = $this->get('serializer')->serialize($entity, $this->getSerializationFormat());
 
         return new ZeniumResponse($serializedEntity);
@@ -149,6 +138,21 @@ abstract class AbstractApiController extends Controller
         $serializedEntity = $this->get('serializer')->serialize($entities, $this->getSerializationFormat());
 
         return new ZeniumResponse($serializedEntity);
+    }
+
+    /**
+     * Get the request body as an array.
+     *
+     * @param Request $request
+     *
+     * @return array
+     */
+    protected function getRequestContentAsArray(Request $request)
+    {
+        $jsonData    = $request->getContent();
+        $requestData = json_decode($jsonData, true);
+
+        return $requestData;
     }
 
     /**

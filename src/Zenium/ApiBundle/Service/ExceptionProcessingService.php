@@ -5,7 +5,7 @@ namespace Zenium\ApiBundle\Service;
 
 
 use Symfony\Component\Validator\ConstraintViolation;
-use Symfony\Component\Validator\ConstraintViolationList;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
 
 /**
  * Handles the processing of various exception messages so that they can be easily
@@ -19,11 +19,11 @@ class ExceptionProcessingService
     /**
      * Process the validation list so that errors can be easily displayed in the API.
      *
-     * @param ConstraintViolationList $list
+     * @param ConstraintViolationListInterface $list
      *
      * @return array
      */
-    public function processValidationErrorsIntoJsonArray(ConstraintViolationList $list)
+    public function processValidationErrorsIntoJsonArray(ConstraintViolationListInterface $list)
     {
         $processedData = [];
 
