@@ -62,6 +62,15 @@ class QuestionControllerTest extends AbstractApiControllerTest
         return $this->readMockFile('question.update.request_invalid.json');
     }
 
+    public function testAssociateToQuestionCategoryAction()
+    {
+        $this->getClient()->request('PATCH', '/api/question/1/question-category/3');
+        $this->assertSuccessfulResponse();
+
+        $question = $this->getContainer()->get('doctrine')->getRepository('AppBundle:Question')->find(1);
+        $this->assertNotNull($question->getQuestionCategory());
+        $this->assertEquals(3, $question->getQuestionCategory()->getId());
+    }
 
     /**
      * Verify the data that was retrieved after making a create request.

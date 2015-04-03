@@ -3,6 +3,8 @@
 
 namespace Zenium\AppBundle\Manager;
 
+use Zenium\AppBundle\Entity\Question;
+use Zenium\AppBundle\Entity\QuestionCategory;
 use Zenium\AppBundle\Repository\AbstractBaseRepository;
 
 /**
@@ -21,5 +23,21 @@ class QuestionManager extends AbstractManager
     public function getRepository()
     {
         return $this->getManager()->getRepository('AppBundle:Question');
+    }
+
+    /**
+     * Associate a Question to a QuestionCategory.
+     *
+     * @param Question         $question
+     * @param QuestionCategory $questionCategory
+     *
+     * @return Question
+     */
+    public function associateQuestionToQuestionCategory(Question $question, QuestionCategory $questionCategory)
+    {
+        $question->setQuestionCategory($questionCategory);
+        $this->getManager()->flush();
+
+        return $question;
     }
 }

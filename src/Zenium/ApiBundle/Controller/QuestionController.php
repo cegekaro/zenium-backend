@@ -130,17 +130,11 @@ class QuestionController extends AbstractApiController
     {
         /** @var Question $question */
         $question = $this->get('zenium.app.question.manager')->findOneById($questionId);
-        if (null === $question) {
-            throw new ZeniumException('Resource not found.', ZeniumStatusCode::RESOURCE_NOT_FOUND);
-        }
 
         /** @var QuestionCategory $questionCategory */
         $questionCategory = $this->get('zenium.app.question_category.manager')->findOneById($questionCategoryId);
-        if (null === $questionCategory) {
-            throw new ZeniumException('Resource not found.', ZeniumStatusCode::RESOURCE_NOT_FOUND);
-        }
 
-        $question->setQuestionCategory($questionCategory);
+        $this->get('zenium.app.question.manager')->associateQuestionToQuestionCategory($question, $questionCategory);
 
         return new ZeniumResponse();
     }
