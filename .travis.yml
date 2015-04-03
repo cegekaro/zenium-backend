@@ -29,6 +29,6 @@ before_script:
 - shell/reset-db.sh test
 script:
 - phpunit -c app --coverage-text --coverage-clover=coverage.clover
-- bin/behat
+- bin/behat -f progress
 after_script:
 - php bin/ocular code-coverage:upload --format=php-clover coverage.clover

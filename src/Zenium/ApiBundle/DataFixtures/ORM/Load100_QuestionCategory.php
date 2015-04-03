@@ -23,7 +23,7 @@ class Load100_QuestionCategory extends AbstractFixture implements OrderedFixture
      *
      * @param ObjectManager $manager
      */
-    function load(ObjectManager $manager)
+    public function load(ObjectManager $manager)
     {
         $seedData = [
             'OOP',
@@ -48,7 +48,7 @@ class Load100_QuestionCategory extends AbstractFixture implements OrderedFixture
      *
      * @return integer
      */
-    function getOrder()
+    public function getOrder()
     {
         return 100;
     }

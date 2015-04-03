@@ -1,10 +1,15 @@
 services:
-    app.abstract.manager:
+    zenium.app.abstract.manager:
         class: Zenium\AppBundle\Manager\AbstractManager
         arguments: [@doctrine.orm.entity_manager]
         abstract: true
 
-    app.question_category.manager:
+    zenium.app.question_category.manager:
         class: Zenium\AppBundle\Manager\QuestionCategoryManager
         arguments: [@doctrine.orm.entity_manager]
-        parent: app.abstract.manager
+        parent: zenium.app.abstract.manager
+
+    zenium.app.question.manager:
+        class: Zenium\AppBundle\Manager\QuestionManager
+        arguments: [@doctrine.orm.entity_manager]
+        parent: zenium.app.abstract.manager

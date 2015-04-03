@@ -33,20 +33,9 @@ abstract class AbstractApiController extends Controller
      */
     public function createAction(Request $request)
     {
-        $jsonData    = $request->getContent();
-        $requestData = json_decode($jsonData, true);
+        $requestData = $this->getRequestContentAsArray($request);
 
-        $entity           = $this->getEntityService()->createFromArray($requestData);
-        $validationErrors = $this->get('validator')->validate($entity);
-
-        if (count($validationErrors) > 0) {
-            $validationErrors = $this->get('api.exception_processing.service')->processValidationErrorsIntoJsonArray($validationErrors);
-            throw new ZeniumException('Entity does not validate correctly.', ZeniumStatusCode::INVALID_DATA, $validationErrors);
-        }
-
-        $this->getManager()->persist($entity);
-        $this->getManager()->flush();
-
+        $entity           = $this->getEntityService()->createFromArrayValidateAndPersist($requestData);
         $serializedEntity = $this->get('serializer')->serialize($entity, $this->getSerializationFormat());
 
         return new ZeniumResponse($serializedEntity);
@@ -64,26 +53,11 @@ abstract class AbstractApiController extends Controller
      */
     public function updateAction(Request $request, $id)
     {
-        $jsonData    = $request->getContent();
-        $requestData = json_decode($jsonData, true);
+        $requestData    = $this->getRequestContentAsArray($request);
+        $existingEntity = $this->getEntityManager()->findOneById($id);
 
-        $entity = $this->getEntityManager()->findOneById($id);
-        if (null === $entity) {
-            throw new ZeniumException('Resource not found.', ZeniumStatusCode::RESOURCE_NOT_FOUND);
-        }
-
-        $entity           = $this->getEntityService()->updateFromArray($entity, $requestData);
-        $validationErrors = $this->get('validator')->validate($entity);
-
-        if (count($validationErrors) > 0) {
-            $validationErrors = $this->get('api.exception_processing.service')->processValidationErrorsIntoJsonArray($validationErrors);
-            throw new ZeniumException('Entity does not validate correctly.', ZeniumStatusCode::INVALID_DATA, $validationErrors);
-        }
-
-        $this->getManager()->persist($entity);
-        $this->getManager()->flush();
-
-        $serializedEntity = $this->get('serializer')->serialize($entity, $this->getSerializationFormat());
+        $updatedEntity    = $this->getEntityService()->updateFromArrayValidateAndPersist($existingEntity, $requestData);
+        $serializedEntity = $this->get('serializer')->serialize($updatedEntity, $this->getSerializationFormat());
 
         return new ZeniumResponse($serializedEntity);
     }
@@ -99,16 +73,7 @@ abstract class AbstractApiController extends Controller
      */
     public function deleteAction($id)
     {
-        $entity = $this->getEntityManager()->findOneById($id);
-
-        if (null === $entity) {
-            throw new ZeniumException('Resource not found.', ZeniumStatusCode::RESOURCE_NOT_FOUND);
-        }
-
-        $entity->setDeleted(true);
-
-        $this->getManager()->persist($entity);
-        $this->getManager()->flush();
+        $this->getEntityManager()->deleteById($id);
 
         return new ZeniumResponse();
     }
@@ -125,10 +90,6 @@ abstract class AbstractApiController extends Controller
     public function getAction($id)
     {
         $entity = $this->getEntityManager()->findOneById($id);
-
-        if (null === $entity) {
-            throw new ZeniumException('Resource not found.', ZeniumStatusCode::RESOURCE_NOT_FOUND);
-        }
 
         $serializedEntity = $this->get('serializer')->serialize($entity, $this->getSerializationFormat());
 
@@ -152,11 +113,18 @@ abstract class AbstractApiController extends Controller
     }
 
     /**
-     * @return ObjectManager
+     * Get the request body as an array.
+     *
+     * @param Request $request
+     *
+     * @return array
      */
-    public function getManager()
+    protected function getRequestContentAsArray(Request $request)
     {
-        return $this->get('doctrine')->getManager();
+        $jsonData    = $request->getContent();
+        $requestData = json_decode($jsonData, true);
+
+        return $requestData;
     }
 
     /**

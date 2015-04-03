@@ -5,15 +5,17 @@ namespace Zenium\ApiBundle\Service;
 
 
 use Zenium\AppBundle\Entity\AbstractBaseEntity;
+use Zenium\AppBundle\Entity\Question;
 use Zenium\AppBundle\Entity\QuestionCategory;
+use Zenium\AppBundle\Exception\ZeniumException;
 
 /**
- * Manages creating and updating data for Question Categories.
+ * Manages creating and updating data for Questions.
  *
  * @package ApiBundle\Service
  * @author  Petre Pătrașc <petre@dreamlabs.ro>
  */
-class QuestionCategoryService extends AbstractEntityService
+class QuestionService extends AbstractEntityService
 {
     /**
      * Create a new entry from an array.
@@ -24,9 +26,9 @@ class QuestionCategoryService extends AbstractEntityService
      */
     public function createFromArray(array $properties = [])
     {
-        $questionCategory = new QuestionCategory;
+        $question = new Question;
 
-        return $this->updateFromArray($questionCategory, $properties);
+        return $this->updateFromArray($question, $properties);
     }
 
     /**
@@ -40,12 +42,16 @@ class QuestionCategoryService extends AbstractEntityService
      */
     public function updateFromArray(AbstractBaseEntity $object, array $properties = [])
     {
-        if (!$object instanceof QuestionCategory) {
+        if (!$object instanceof Question) {
             throw new ZeniumException("Invalid data sent for update");
         }
 
-        if (array_key_exists('name', $properties)) {
-            $object->setName($properties['name']);
+        if (array_key_exists('content', $properties)) {
+            $object->setContent($properties['content']);
+        }
+
+        if (array_key_exists('difficulty', $properties)) {
+            $object->setDifficulty($properties['difficulty']);
         }
 
         return $object;

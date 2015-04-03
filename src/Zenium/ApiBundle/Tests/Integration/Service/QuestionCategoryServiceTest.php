@@ -25,7 +25,7 @@ class QuestionCategoryServiceTestAbstract extends AbstractBaseIntegrationTest
     {
         parent::setUp();
 
-        $this->questionCategoryService = $this->getContainer()->get('api.question_category.service');
+        $this->questionCategoryService = $this->getContainer()->get('zenium.api.question_category.service');
     }
 
     public function testCreateFromArray()

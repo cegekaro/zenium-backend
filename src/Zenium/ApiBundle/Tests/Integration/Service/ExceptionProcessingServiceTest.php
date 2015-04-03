@@ -31,7 +31,7 @@ class ExceptionProcessingServiceTestAbstract extends AbstractBaseIntegrationTest
     {
         parent::setUp();
 
-        $this->exceptionProcessingService = $this->getContainer()->get('api.exception_processing.service');
+        $this->exceptionProcessingService = $this->getContainer()->get('zenium.api.exception_processing.service');
         $this->validationService          = $this->getContainer()->get('validator');
     }
 

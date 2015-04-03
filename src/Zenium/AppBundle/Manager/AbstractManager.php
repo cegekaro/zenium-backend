@@ -5,6 +5,8 @@ namespace Zenium\AppBundle\Manager;
 
 
 use Zenium\AppBundle\Entity\AbstractBaseEntity;
+use Zenium\AppBundle\Exception\ZeniumException;
+use Zenium\AppBundle\Exception\ZeniumStatusCode;
 use Zenium\AppBundle\Repository\AbstractBaseRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 
@@ -39,13 +41,20 @@ abstract class AbstractManager
      * @param int $id The ID of the entry.
      *
      * @return null|AbstractBaseEntity
+     * @throws ZeniumException
      */
     public function findOneById($id)
     {
-        return $this->getRepository()->findOneBy([
-            'id' => $id,
+        $entity = $this->getRepository()->findOneBy([
+            'id'      => $id,
             'deleted' => false,
         ]);
+
+        if (null === $entity) {
+            throw new ZeniumException('Resource not found.', ZeniumStatusCode::RESOURCE_NOT_FOUND);
+        }
+
+        return $entity;
     }
 
     /**
@@ -58,6 +67,25 @@ abstract class AbstractManager
         return $this->getRepository()->findBy([
             'deleted' => false,
         ]);
+    }
+
+    /**
+     * Delete an entry by its ID.
+     *
+     * @param int $id The ID of the entry that should be deleted.
+     *
+     * @return null|AbstractBaseEntity
+     * @throws ZeniumException
+     */
+    public function deleteById($id)
+    {
+        $entity = $this->findOneById($id);
+        $entity->setDeleted(true);
+
+        $this->getManager()->persist($entity);
+        $this->getManager()->flush();
+
+        return $entity;
     }
 
     /**

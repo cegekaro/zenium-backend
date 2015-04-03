@@ -20,7 +20,7 @@ class ZeniumException extends \Exception
     {
         parent::__construct($message, $code);
 
-        $this->extraInformation = $extraInformation;
+        $this->setExtraInformation($extraInformation);
     }
 
     /**

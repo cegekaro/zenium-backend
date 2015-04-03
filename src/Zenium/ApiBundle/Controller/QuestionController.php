@@ -2,27 +2,31 @@
 
 namespace Zenium\ApiBundle\Controller;
 
+use Symfony\Component\HttpFoundation\Response;
 use Zenium\ApiBundle\Service\AbstractEntityService;
+use Zenium\AppBundle\Entity\Question;
+use Zenium\AppBundle\Entity\QuestionCategory;
 use Zenium\AppBundle\Exception\ZeniumException;
+use Zenium\AppBundle\Exception\ZeniumStatusCode;
 use Zenium\AppBundle\Manager\AbstractManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * Describes the API functionality for interacting with Question Categories.
+ * Describes the API functionality for interacting with Questions.
  *
  * @package ApiBundle\Controller
  * @author  Petre Pătrașc <petre@dreamlabs.ro>
  */
-class QuestionCategoryController extends AbstractApiController
+class QuestionController extends AbstractApiController
 {
     /**
      * @return AbstractManager
      */
     public function getEntityManager()
     {
-        return $this->get('zenium.app.question_category.manager');
+        return $this->get('zenium.app.question.manager');
     }
 
     /**
@@ -32,13 +36,13 @@ class QuestionCategoryController extends AbstractApiController
      */
     public function getEntityService()
     {
-        return $this->get('zenium.api.question_category.service');
+        return $this->get('zenium.api.question.service');
     }
 
     /**
      * Create a new entry into the system.
      *
-     * @Route("/question-category/", name="api.question_category.create")
+     * @Route("/question/", name="api.question.create")
      * @Method({"POST"})
      *
      * @param Request $request
@@ -57,7 +61,7 @@ class QuestionCategoryController extends AbstractApiController
      * @param Request $request
      * @param int     $id The ID of the entry.
      *
-     * @Route("/question-category/{id}", name="api.question_category.update")
+     * @Route("/question/{id}", name="api.question.update")
      * @Method({"PUT", "PATCH"})
      *
      * @return string
@@ -72,7 +76,7 @@ class QuestionCategoryController extends AbstractApiController
      *
      * @param int $id The ID of the entry.
      *
-     * @Route("/question-category/{id}", name="api.question_category.delete")
+     * @Route("/question/{id}", name="api.question.delete")
      * @Method({"DELETE"})
      *
      * @return string
@@ -87,7 +91,7 @@ class QuestionCategoryController extends AbstractApiController
      *
      * @param int $id The ID of the entry.
      *
-     * @Route("/question-category/{id}", name="api.question_category.get")
+     * @Route("/question/{id}", name="api.question.get")
      * @Method({"GET"})
      *
      * @return string
@@ -100,7 +104,7 @@ class QuestionCategoryController extends AbstractApiController
     /**
      * List all of the entries in the system
      *
-     * @Route("/question-category/", name="api.question_category.list")
+     * @Route("/question/", name="api.question.list")
      * @Method({"GET"})
      *
      * @return string
@@ -108,6 +112,31 @@ class QuestionCategoryController extends AbstractApiController
     public function listAction()
     {
         return parent::listAction();
+    }
+
+    /**
+     * Associate a Question to a Question Category
+     *
+     * @Route("/question/{questionId}/question-category/{questionCategoryId}", name="api.question.associate.question_category")
+     * @Method({"PATCH"})
+     *
+     * @param int $questionId
+     * @param int $questionCategoryId
+     *
+     * @return string
+     * @throws ZeniumException
+     */
+    public function associateToQuestionCategoryAction($questionId, $questionCategoryId)
+    {
+        /** @var Question $question */
+        $question = $this->get('zenium.app.question.manager')->findOneById($questionId);
+
+        /** @var QuestionCategory $questionCategory */
+        $questionCategory = $this->get('zenium.app.question_category.manager')->findOneById($questionCategoryId);
+
+        $this->get('zenium.app.question.manager')->associateQuestionToQuestionCategory($question, $questionCategory);
+
+        return new ZeniumResponse();
     }
 
 }

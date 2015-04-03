@@ -3,6 +3,7 @@
 
 namespace Zenium\AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -21,6 +22,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class QuestionCategory extends AbstractBaseEntity
 {
+    public function __construct()
+    {
+        $this->questions = new ArrayCollection();
+    }
+
     /**
      * @var string
      *
@@ -34,6 +40,13 @@ class QuestionCategory extends AbstractBaseEntity
      * @JMS\Expose()
      */
     protected $name;
+
+    /**
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="Zenium\AppBundle\Entity\Question", cascade={"persist", "remove"}, mappedBy="questionCategory")
+     */
+    protected $questions;
 
     /**
      * @return string
@@ -55,5 +68,35 @@ class QuestionCategory extends AbstractBaseEntity
         return $this;
     }
 
+    /**
+     * @return ArrayCollection
+     */
+    public function getQuestions()
+    {
+        return $this->questions;
+    }
 
+    /**
+     * @param ArrayCollection $questions
+     *
+     * @return $this
+     */
+    public function setQuestions($questions)
+    {
+        $this->questions = $questions;
+
+        return $this;
+    }
+
+    /**
+     * @param Question $question
+     *
+     * @return $this
+     */
+    public function addQuestion(Question $question)
+    {
+        $this->questions->add($question);
+
+        return $this;
+    }
 }
