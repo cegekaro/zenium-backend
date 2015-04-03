@@ -24,7 +24,7 @@ class Load200_Question extends AbstractFixture implements OrderedFixtureInterfac
      *
      * @param ObjectManager $manager
      */
-    function load(ObjectManager $manager)
+    public function load(ObjectManager $manager)
     {
         /** @var QuestionCategory $questionCategory */
         $questionCategory = $manager->getRepository('AppBundle:QuestionCategory')->find(4);
@@ -61,7 +61,7 @@ class Load200_Question extends AbstractFixture implements OrderedFixtureInterfac
      *
      * @return integer
      */
-    function getOrder()
+    public function getOrder()
     {
         return 200;
     }

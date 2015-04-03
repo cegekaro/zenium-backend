@@ -36,9 +36,14 @@ class QuestionCategoryService extends AbstractEntityService
      * @param array              $properties
      *
      * @return AbstractBaseEntity
+     * @throws ZeniumException
      */
     public function updateFromArray(AbstractBaseEntity $object, array $properties = [])
     {
+        if (!$object instanceof QuestionCategory) {
+            throw new ZeniumException("Invalid data sent for update");
+        }
+
         if (array_key_exists('name', $properties)) {
             $object->setName($properties['name']);
         }
