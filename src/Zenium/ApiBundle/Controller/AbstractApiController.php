@@ -128,14 +128,6 @@ abstract class AbstractApiController extends Controller
     }
 
     /**
-     * @return ObjectManager
-     */
-    public function getManager()
-    {
-        return $this->get('doctrine')->getManager();
-    }
-
-    /**
      * Retrieve the manager service of the Entity.
      *
      * @return AbstractManager
